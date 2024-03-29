@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: true # fail if anything fails
       matrix:
-        container_os: [python:3.9.3-alpine, python:3.9.3-windowsservercore-ltsc2016]
+        container_os: ["python:3.9.3-alpine", "python:3.9.3-windowsservercore-ltsc2016"]
     runs-on: [self-hosted, ec2]
     container: ${{ matrix.container_os }}
     steps:
