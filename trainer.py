@@ -28,17 +28,27 @@ parser.add_argument(
     default=0.05,
     help="Height shift range for data augmentation",
 )
-parser.add_argument("--shear_range", type=float, default=0.05, help="Shear range for data augmentation")
-parser.add_argument("--zoom_range", type=float, default=0.05, help="Zoom range for data augmentation")
+parser.add_argument(
+    "--shear_range", type=float, default=0.05, help="Shear range for data augmentation"
+)
+parser.add_argument(
+    "--zoom_range", type=float, default=0.05, help="Zoom range for data augmentation"
+)
 parser.add_argument(
     "--horizontal_flip",
     type=bool,
     default=True,
     help="Whether to apply horizontal flip for data augmentation",
 )
-parser.add_argument("--fill_mode", type=str, default="nearest", help="Fill mode for data augmentation")
-parser.add_argument("--steps_per_epoch", type=int, default=2, help="Shear range for data augmentation")
-parser.add_argument("--epochs", type=int, default=1, help="Shear range for data augmentation")
+parser.add_argument(
+    "--fill_mode", type=str, default="nearest", help="Fill mode for data augmentation"
+)
+parser.add_argument(
+    "--steps_per_epoch", type=int, default=2, help="Shear range for data augmentation"
+)
+parser.add_argument(
+    "--epochs", type=int, default=1, help="Shear range for data augmentation"
+)
 
 args = parser.parse_args()
 
@@ -52,7 +62,9 @@ data_gen_args = dict(
     horizontal_flip=args.horizontal_flip,
     fill_mode=args.fill_mode,
 )
-myGene = trainGenerator(2, "data/membrane/train", "image", "label", data_gen_args, save_to_dir=None)
+myGene = trainGenerator(
+    2, "data/membrane/train", "image", "label", data_gen_args, save_to_dir=None
+)
 
 model = unet()
 model_checkpoint = tf.keras.callbacks.ModelCheckpoint(
