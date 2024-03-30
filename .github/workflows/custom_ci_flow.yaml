@@ -70,8 +70,8 @@ jobs:
         run: |
          echo "Training via mlflow project run PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH" 
          mlflow run  ./ -e train  --env-manager=local   --experiment-name project_exec -P epochs=$EPOCHS steps_per_epoch=$STEPS_PER_EPOCH
-        continue-on-error: true
         timeout-minutes: 10
+        continue-on-error: true
       - id: CreateModelArtifacts
         name: CreateModelArtifacts
         # if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
