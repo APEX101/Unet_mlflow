@@ -6,7 +6,7 @@ import argparse
 from predictor import Infer
 from metrics import flow_mean_iou
 
-mlflow.tensorflow.autolog()
+#mlflow.tensorflow.autolog()
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Train a UNet model on membrane data.")
