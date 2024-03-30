@@ -50,7 +50,7 @@ jobs:
   TrainArt:
     env:
       EPOCHS: 2
-      STEPS_PER_EPOCH: ${{ github.var.STEPS_PER_EPOCH }}
+      STEPS_PER_EPOCH: ${{ vars.STEPS_PER_EPOCH }}
     needs: BuildTestScripts
     runs-on: [self-hosted, ec2]
     container: python:3.9.3-slim-buster
