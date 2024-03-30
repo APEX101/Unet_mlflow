@@ -81,7 +81,7 @@ jobs:
         timeout-minutes: 10
       - id: UploadModelArtifact
         name: UploadModelArtifact
-        uses: actions/upload-artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: UnetModel
           path: ./*.keras
