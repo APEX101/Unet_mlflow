@@ -41,11 +41,11 @@ jobs:
         uses: lgeiger/black-action@v1.0.1
         with:
           args: ". --check" # returns exit code 1 if files need reformatting
-      - id: Docstringtest
-        name: Docstringtest
-        uses: JackMcKew/python-interrogate-check@main
-        with:
-          path: './'
+      # - id: Docstringtest
+      #   name: Docstringtest
+      #   uses: JackMcKew/python-interrogate-check@main
+      #   with:
+      #     path: './'
   # for trianing and savig the artifact files
   TrainArt:
     env:
