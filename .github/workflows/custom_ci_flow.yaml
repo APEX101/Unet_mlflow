@@ -53,7 +53,7 @@ jobs:
       STEPS_PER_EPOCH: ${{ github.var.STEPS_PER_EPOCH }}
     needs: BuildTestScripts
     runs-on: [self-hosted, ec2]
-    container: python:3.9.3-alpine
+    container: python:3.9.3-slim-buster
     steps:
       - id: CheckoutRepo
         name: CheckoutRepo
