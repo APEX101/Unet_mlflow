@@ -74,7 +74,7 @@ jobs:
         continue-on-error: true
       - id: CreateModelArtifacts
         name: CreateModelArtifacts
-        # if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
+        if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
         run: |
          echo "${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}"
          echo "${{ steps.CreateModelArtifactsmlflow.outcome }}"
