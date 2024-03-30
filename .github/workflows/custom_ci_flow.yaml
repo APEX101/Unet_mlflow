@@ -74,7 +74,7 @@ jobs:
         timeout-minutes: 10
       - id: CreateModelArtifacts
         name: CreateModelArtifacts
-        if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
+        # if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
         run: |
          echo "Fallback to training via python PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH"
          python trainer.py --epochs $EPOCHS --steps_per_epoch=$STEPS_PER_EPOCH
