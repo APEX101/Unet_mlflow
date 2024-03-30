@@ -96,6 +96,7 @@ jobs:
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
+          apt update
           apt install git
           git add .
           git commit -m "artifact url revision: ${{ github.run_id }}"
