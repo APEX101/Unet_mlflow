@@ -96,7 +96,7 @@ jobs:
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
-          sudo apt install git
+          apt install git
           git add .
           git commit -m "artifact url revision: ${{ github.run_id }}"
           git push
