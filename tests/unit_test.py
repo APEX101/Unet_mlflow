@@ -11,5 +11,5 @@ def test_subtract():
 
 
 # this will fail
-def test_mult():
-    assert 2 * 2 == 5
+# def test_mult():
+#    assert 2 * 2 == 5
