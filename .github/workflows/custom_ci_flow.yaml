@@ -95,7 +95,7 @@ jobs:
         # create a artifact url file to download while deployemnt
       - id: SavArtifactUrl
         name: SavArtifactUrl
-        run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} > artictsutil.txt
+        run: echo UnetModel-${{ steps.UploadModelArtifact.outputs.artifact-id }} > artictsutil.txt
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
