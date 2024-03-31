@@ -32,7 +32,7 @@ jobs:
       - id: DownloadModelArtifact
         name: DownloadModelArtifact
         run: |
-          head -n1 test.txt | xargs wget
+          head -n1 artictsutil.txt | xargs wget
           unzip *.zip
       - id: StartFlaskServer
         name: StartFlaskServer
