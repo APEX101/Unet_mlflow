@@ -30,7 +30,7 @@ jobs:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
       - id: readfilename
-        run: echo "artifact_name=${ head -n 1 }" >> "$GITHUB_OUTPUT"
+        run: echo "artifact_name=$(head -n 1 artictsutil.txt)" >> "$GITHUB_OUTPUT"
       - id: DownloadModelArtifact
         name: DownloadModelArtifact
         run: echo ${{ steps.readfilename.outputs.artifact_name }}
