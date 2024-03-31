@@ -39,7 +39,7 @@ jobs:
           # name: ${{ steps.readfilename.outputs.artifact_name }}
           name: UnetModel
           github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
-          repository: Unet_mlflow
+          repository: APEX101/Unet_mlflow
       - id: StartFlaskServer
         name: StartFlaskServer
         run: python flask_api.py
