@@ -18,7 +18,7 @@ permissions: write-all
   
 jobs:
   DeployServer:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     strategy:
       fail-fast: true # fail if anything fails
     runs-on: [self-hosted, ec2]
