@@ -99,6 +99,7 @@ jobs:
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
+          git config --global --add safe.directory /__w/Unet_mlflow/Unet_mlflow
           git add .
           git commit -m "artifact url revision: ${{ github.run_id }}"
           git push
