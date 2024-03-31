@@ -33,9 +33,10 @@ jobs:
         run: echo "artifact_name=$(head -n 1 artictsutil.txt)" >> "$GITHUB_OUTPUT"
       - id: DownloadModelArtifact
         name: DownloadModelArtifact
-        run: echo ${{ steps.readfilename.outputs.artifact_name }}
-        # uses: actions/download-artifact@v4
-        # with: 
+        # run: echo ${{ steps.readfilename.outputs.artifact_name }}
+        uses: actions/download-artifact@v4
+        with: 
+          name: ${{ steps.readfilename.outputs.artifact_name }}
       - id: StartFlaskServer
         name: StartFlaskServer
         run: python flask_api.py
