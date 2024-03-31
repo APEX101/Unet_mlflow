@@ -93,6 +93,9 @@ jobs:
       - id: SavArtifactUrl
         name: SavArtifactUrl
         run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
+      - id: InstallGit
+        name: InstallGit
+        run: apt-get update && apt-get install -y git
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         uses: stefanzweifel/git-auto-commit-action@v5
