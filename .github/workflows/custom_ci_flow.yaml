@@ -92,7 +92,7 @@ jobs:
           path: ./*.keras
           if-no-files-found: error
           retention-days: 30
-        create a artifact url file to download while deployemnt
+        # create a artifact url file to download while deployemnt
       - id: SavArtifactUrl
         name: SavArtifactUrl
         run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
