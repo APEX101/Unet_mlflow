@@ -29,11 +29,13 @@ jobs:
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }}
+      - id: readfilename
+        run: echo "artifact_name=${ head -n 1 }" >> "$GITHUB_OUTPUT"
       - id: DownloadModelArtifact
         name: DownloadModelArtifact
-        run: |
-          head -n1 artictsutil.txt | xargs wget
-          unzip *.zip
+        run: echo ${{ steps.readfilename.outputs.artifact_name }}
+        # uses: actions/download-artifact@v4
+        # with: 
       - id: StartFlaskServer
         name: StartFlaskServer
         run: python flask_api.py
