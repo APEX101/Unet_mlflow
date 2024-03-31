@@ -100,6 +100,8 @@ jobs:
         name: CommitArtifactUrl
         run: |
           git config --global --add safe.directory /__w/Unet_mlflow/Unet_mlflow
+          git config --global user.email "${{ github.actor }}@hotmail.com"
+          git config --global user.name ${{ github.actor }}
           git add .
           git commit -m "artifact url revision: ${{ github.run_id }}"
           git push
