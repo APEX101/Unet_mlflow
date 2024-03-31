@@ -55,6 +55,9 @@ jobs:
     runs-on: [self-hosted, ec2]
     container: python:3.9.3-slim-buster
     steps:
+      - id: InstallGit
+        name: InstallGit
+        run: apt-get update && apt-get install -y git
       - id: CheckoutRepo
         name: CheckoutRepo
         uses: actions/checkout@v4
@@ -93,9 +96,6 @@ jobs:
       # - id: SavArtifactUrl
       #   name: SavArtifactUrl
       #   run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
-      - id: InstallGit
-        name: InstallGit
-        run: apt-get update && apt-get install -y git
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
