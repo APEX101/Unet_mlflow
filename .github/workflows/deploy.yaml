@@ -14,7 +14,8 @@ on:
   pull_request:
     types: [closed]
   workflow_dispatch:
-
+permissions: write-all
+  
 jobs:
   DeployServer:
     if: github.event.pull_request.merged == true
