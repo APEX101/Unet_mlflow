@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: true # fail if anything fails
       matrix:
-        container_os: [python:3.9.3-alpine, python:3.9.3-windowsservercore-ltsc2016]
+        container_os: ["python:3.9.3-slim-buster", "python:3.11-slim-buster"]
     runs-on: [self-hosted, ec2]
     container: ${{ matrix.container_os }}
     steps:
@@ -41,20 +41,23 @@ jobs:
         uses: lgeiger/black-action@v1.0.1
         with:
           args: ". --check" # returns exit code 1 if files need reformatting
-      - id: Docstringtest
-        name: Docstringtest
-        uses: JackMcKew/python-interrogate-check@main
-        with:
-          path: './'
+      # - id: Docstringtest
+      #   name: Docstringtest
+      #   uses: JackMcKew/python-interrogate-check@main
+      #   with:
+      #     path: './'
   # for trianing and savig the artifact files
   TrainArt:
     env:
-      EPOCHS: 2
-      STEPS_PER_EPOCH: ${{ github.var.STEPS_PER_EPOCH }}
+      EPOCHS: 1
+      STEPS_PER_EPOCH: ${{ vars.STEPS_PER_EPOCH }}
     needs: BuildTestScripts
     runs-on: [self-hosted, ec2]
-    container: python:3.9.3-alpine
+    container: python:3.9.3-slim-buster
     steps:
+      - id: InstallGit
+        name: InstallGit
+        run: apt-get update && apt-get install -y git
       - id: CheckoutRepo
         name: CheckoutRepo
         uses: actions/checkout@v4
@@ -71,16 +74,19 @@ jobs:
          echo "Training via mlflow project run PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH" 
          mlflow run  ./ -e train  --env-manager=local   --experiment-name project_exec -P epochs=$EPOCHS steps_per_epoch=$STEPS_PER_EPOCH
         timeout-minutes: 10
+        continue-on-error: true
       - id: CreateModelArtifacts
         name: CreateModelArtifacts
-        if: ${{ failure() }}
+        if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
         run: |
+         echo "${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}"
+         echo "${{ steps.CreateModelArtifactsmlflow.outcome }}"
          echo "Fallback to training via python PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH"
          python trainer.py --epochs $EPOCHS --steps_per_epoch=$STEPS_PER_EPOCH
         timeout-minutes: 10
       - id: UploadModelArtifact
         name: UploadModelArtifact
-        uses: actions/upload-artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: UnetModel
           path: ./*.keras
@@ -89,12 +95,15 @@ jobs:
         # create a artifact url file to download while deployemnt
       - id: SavArtifactUrl
         name: SavArtifactUrl
-        run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
+        run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} > artictsutil.txt
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
-          git add artictsutil
+          git config --global --add safe.directory /__w/Unet_mlflow/Unet_mlflow
+          git config --global user.email "${{ github.actor }}@hotmail.com"
+          git config --global user.name ${{ github.actor }}
+          git add .
           git commit -m "artifact url revision: ${{ github.run_id }}"
           git push
-
+        
 

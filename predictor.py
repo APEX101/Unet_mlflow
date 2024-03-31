@@ -3,13 +3,14 @@ from data import *
 from model import unet
 from logger import logger
 
-# changes to test workflow
+# changes to test workflow and more test
+
 
 class Infer:
     def __init__(self, chkpt_path=None) -> None:
         # :TODO load the model using tf
         if chkpt_path:
-            
+
             self.model = load_model(chkpt_path)
         self.model = unet()
 
