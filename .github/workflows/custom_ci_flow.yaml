@@ -49,7 +49,7 @@ jobs:
   # for trianing and savig the artifact files
   TrainArt:
     env:
-      EPOCHS: 2
+      EPOCHS: 1
       STEPS_PER_EPOCH: ${{ vars.STEPS_PER_EPOCH }}
     # needs: BuildTestScripts
     runs-on: [self-hosted, ec2]
@@ -62,45 +62,39 @@ jobs:
           repository: ${{ github.repository }}
           ref: ${{ github.ref }} # the triggering branch
           fetch-depth: 0
-      # - id: InstalllibDependencies
-      #   name: InstalllibDependencies
-      #   run: pip install -r requirements.txt
-      # - id: CreateModelArtifactsmlflow
-      #   name: CreateModelArtifactsmlflow
-      #   run: |
-      #    echo "Training via mlflow project run PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH" 
-      #    mlflow run  ./ -e train  --env-manager=local   --experiment-name project_exec -P epochs=$EPOCHS steps_per_epoch=$STEPS_PER_EPOCH
-      #   timeout-minutes: 10
-      #   continue-on-error: true
-      # - id: CreateModelArtifacts
-      #   name: CreateModelArtifacts
-      #   if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
-      #   run: |
-      #    echo "${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}"
-      #    echo "${{ steps.CreateModelArtifactsmlflow.outcome }}"
-      #    echo "Fallback to training via python PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH"
-      #    python trainer.py --epochs $EPOCHS --steps_per_epoch=$STEPS_PER_EPOCH
-      #   timeout-minutes: 10
-      # - id: UploadModelArtifact
-      #   name: UploadModelArtifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: UnetModel
-      #     path: ./*.keras
-      #     if-no-files-found: error
-      #     retention-days: 30
-      #   # create a artifact url file to download while deployemnt
-      # - id: SavArtifactUrl
-      #   name: SavArtifactUrl
-      #   run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
+      - id: InstalllibDependencies
+        name: InstalllibDependencies
+        run: pip install -r requirements.txt
+      - id: CreateModelArtifactsmlflow
+        name: CreateModelArtifactsmlflow
+        run: |
+         echo "Training via mlflow project run PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH" 
+         mlflow run  ./ -e train  --env-manager=local   --experiment-name project_exec -P epochs=$EPOCHS steps_per_epoch=$STEPS_PER_EPOCH
+        timeout-minutes: 10
+        continue-on-error: true
+      - id: CreateModelArtifacts
+        name: CreateModelArtifacts
+        if: ${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}
+        run: |
+         echo "${{ steps.CreateModelArtifactsmlflow.outcome == 'failure' }}"
+         echo "${{ steps.CreateModelArtifactsmlflow.outcome }}"
+         echo "Fallback to training via python PARAMS: ep: $EPOCHS step: $STEPS_PER_EPOCH"
+         python trainer.py --epochs $EPOCHS --steps_per_epoch=$STEPS_PER_EPOCH
+        timeout-minutes: 10
+      - id: UploadModelArtifact
+        name: UploadModelArtifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnetModel
+          path: ./*.keras
+          if-no-files-found: error
+          retention-days: 30
+        # create a artifact url file to download while deployemnt
+      - id: SavArtifactUrl
+        name: SavArtifactUrl
+        run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
-        run: |
-          apt update -y
-          apt install git -y
-          git add .
-          git commit -m "artifact url revision: ${{ github.run_id }}"
-          git push
-        working-directory: ${{ github.workspace }}
-
+        uses: stefanzweifel/git-auto-commit-action@v5
+        
 
