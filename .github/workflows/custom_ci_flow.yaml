@@ -16,36 +16,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  # BuildTestScripts:
-  #   strategy:
-  #     fail-fast: true # fail if anything fails
-  #     matrix:
-  #       container_os: ["python:3.9.3-slim-buster", "python:3.11-slim-buster"]
-  #   runs-on: [self-hosted, ec2]
-  #   container: ${{ matrix.container_os }}
-  #   steps:
-  #     - id: CheckoutRepo
-  #       name: CheckoutRepo
-  #       uses: actions/checkout@v4
-  #       with:
-  #         repository: ${{ github.repository }}
-  #         ref: ${{ github.ref }}
-  #     - id: InstalllibDependencies
-  #       name: InstalllibDependencies
-  #       run: pip install -r requirements.txt
-  #     - id: pytest
-  #       name: pytest
-  #       run: pytest tests/unit_test.py
-  #     - id: blackformattest
-  #       name: blackformattest                   
-  #       uses: lgeiger/black-action@v1.0.1
-  #       with:
-  #         args: ". --check" # returns exit code 1 if files need reformatting
-  #     # - id: Docstringtest
-  #     #   name: Docstringtest
-  #     #   uses: JackMcKew/python-interrogate-check@main
-  #     #   with:
-  #     #     path: './'
+  BuildTestScripts:
+    strategy:
+      fail-fast: true # fail if anything fails
+      matrix:
+        container_os: ["python:3.9.3-slim-buster", "python:3.11-slim-buster"]
+    runs-on: [self-hosted, ec2]
+    container: ${{ matrix.container_os }}
+    steps:
+      - id: CheckoutRepo
+        name: CheckoutRepo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+      - id: InstalllibDependencies
+        name: InstalllibDependencies
+        run: pip install -r requirements.txt
+      - id: pytest
+        name: pytest
+        run: pytest tests/unit_test.py
+      - id: blackformattest
+        name: blackformattest                   
+        uses: lgeiger/black-action@v1.0.1
+        with:
+          args: ". --check" # returns exit code 1 if files need reformatting
+      # - id: Docstringtest
+      #   name: Docstringtest
+      #   uses: JackMcKew/python-interrogate-check@main
+      #   with:
+      #     path: './'
   # for trianing and savig the artifact files
   TrainArt:
     env:
