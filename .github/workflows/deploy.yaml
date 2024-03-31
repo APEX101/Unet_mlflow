@@ -1,0 +1,39 @@
+# trigger: This workflow will trigger on pullrequests created X
+# purpose: this builds the application and runs the tests, pytest, blackformattest,
+# docstring test
+# purpose: also trains and save the model artifacts 
+# matrix: also use the matrx to test on windows and ubuntu
+# Agent: runs on self-hosted runner on aws ec2  X
+# use secrets to store the aws keys
+# Everything should be done using job containers
+
+# deploy on self-hosted as well as github hosted runner
+name: Deploy_CD
+run-name: Deploy${{ github.run_id }}-${{ github.actor }}
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  DeployServer:
+    if: github.event.pull_request.merged == true
+    strategy:
+      fail-fast: true # fail if anything fails
+    runs-on: [self-hosted, ec2]
+    steps:
+      - id: CheckoutRepo
+        name: CheckoutRepo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+      - id: DownloadModelArtifact
+        name: DownloadModelArtifact
+        run: |
+          head -n1 test.txt | xargs wget
+          unzip *.zip
+      - id: StartFlaskServer
+        name: StartFlaskServer
+        run: python flask_api.py
+   

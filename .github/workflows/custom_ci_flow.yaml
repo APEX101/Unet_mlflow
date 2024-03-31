@@ -51,7 +51,7 @@ jobs:
     env:
       EPOCHS: 1
       STEPS_PER_EPOCH: ${{ vars.STEPS_PER_EPOCH }}
-    # needs: BuildTestScripts
+    needs: BuildTestScripts
     runs-on: [self-hosted, ec2]
     container: python:3.9.3-slim-buster
     steps:
@@ -95,7 +95,7 @@ jobs:
         # create a artifact url file to download while deployemnt
       - id: SavArtifactUrl
         name: SavArtifactUrl
-        run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} >> artictsutil.txt
+        run: echo ${{ steps.UploadModelArtifact.outputs.artifact-url }} > artictsutil.txt
       - id: CommitArtifactUrl
         name: CommitArtifactUrl
         run: |
