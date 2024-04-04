@@ -2,8 +2,15 @@ from tensorflow.keras.models import load_model
 from data import *
 from model import unet
 from logger import logger
+import argparse
+import cv2
 
 # changes to test workflow and more test
+parser = argparse.ArgumentParser(description="Predict a UNet model on membrane data.")
+parser.add_argument(
+    "--image_path", type=str, default="nearest", help="Fill mode for data augmentation"
+)
+
 
 
 class Infer:
@@ -28,7 +35,9 @@ class Infer:
 
 if __name__ == "__main__":
     cl = Infer("unet_membrane.keras")
-    testGene = testGenerator("data/membrane/test")
-    inst = next(iter(testGene))
+    # testGene = testGenerator("data/membrane/test")
+    # inst = next(iter(testGene))
+    args = parser.parse_args()
+    inst = cv2.imread(args.image_path)
     pred = cl.predictor(inst)
     logger.info(f"Prediction shape {pred.shape}")
